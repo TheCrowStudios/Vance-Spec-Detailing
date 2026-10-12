@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vance Spec Detailing | Mobile Valeting & Detailing Northern Ireland</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brandBg: '#1a1a1a',
+                        brandCard: '#242424',
+                        brandBorder: '#333333',
+                        brandText: '#fafafa',
+                        brandRed: '#d90429',
+                        brandRedHover: '#ef233c',
+                    },
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #1a1a1a;
+            color: #fafafa;
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333333;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d90429;
+        }
+        .matte-card {
+            background-color: #242424;
+            border: 1px solid #333333;
+            transition: border-color 0.2s ease, transform 0.2s ease;
+        }
+        .matte-card:hover {
+            border-color: #d90429;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brandRed selection:text-white">
+
+    <!-- Top Navigation -->
+    <header class="sticky top-0 z-50 bg-[#1a1a1a]/90 backdrop-blur-md border-b border-[#333333] px-6 lg:px-12 py-4">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <!-- Logo / Brand -->
+            <a href="#" class="flex flex-col">
+                <span class="text-base sm:text-lg font-extrabold tracking-wider text-[#fafafa]">
+                    VANCE SPEC <span class="text-brandRed">DETAILING</span>
+                </span>
+                <span class="text-[10px] uppercase tracking-[0.2em] text-gray-400 font-medium">
+                    Mobile Valeting • NI
+                </span>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 text-xs font-semibold uppercase tracking-wider text-gray-300">
+                <a href="#services" class="hover:text-brandRed transition-colors">Services & Pricing</a>
+                <a href="#about" class="hover:text-brandRed transition-colors">Mobile Info</a>
+                <a href="#gallery" class="hover:text-brandRed transition-colors">Gallery</a>
+                <a href="#contact" class="hover:text-brandRed transition-colors">Book Now</a>
+            </nav>
+
+            <!-- Quick Action Header -->
+            <div class="flex items-center gap-3">
+                <a href="tel:07849351228" class="hidden sm:flex items-center gap-2 text-xs font-semibold text-gray-300 hover:text-white px-3.5 py-2 rounded-lg bg-[#242424] border border-[#333333]">
+                    <i data-lucide="phone" class="w-3.5 h-3.5 text-brandRed"></i>
+                    <span>07849 351228</span>
+                </a>
+                <a href="https://wa.me/447849351228?text=Hi%20Vance,%20I'd%20like%20to%20book%20a%20valet." target="_blank" rel="noopener" class="px-4 py-2 rounded-lg bg-brandRed hover:bg-brandRedHover text-white text-xs font-bold uppercase tracking-wider transition-colors flex items-center gap-2">
+                    <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                    <span>WhatsApp</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="py-20 lg:py-32 px-6 lg:px-12 max-w-6xl mx-auto flex flex-col items-center text-center">
+        <!-- Location Tag -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#242424] border border-[#333333] text-gray-300 text-xs font-medium tracking-wide mb-6">
+            <span class="w-2 h-2 rounded-full bg-brandRed"></span>
+            <span>Covering Belfast, Lisburn & Surrounding Towns</span>
+        </div>
+
+        <!-- Main Headline -->
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-[#fafafa] uppercase max-w-4xl leading-[1.1] mb-6">
+            Bring the clean <br><span class="text-brandRed">to you.</span>
+        </h1>
+
+        <!-- Subtext -->
+        <p class="text-base sm:text-lg text-gray-400 max-w-2xl font-light leading-relaxed mb-10">
+            Professional mobile valeting and detailing delivered directly to your driveway or workplace. Meticulous standards, premium products, zero hassle.
+        </p>
+
+        <!-- CTAs -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mb-12">
+            <a href="#services" class="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-brandRed hover:bg-brandRedHover text-white font-bold text-xs uppercase tracking-wider transition-colors text-center">
+                View Packages & Prices
+            </a>
+            <a href="#contact" class="w-full sm:w-auto px-8 py-3.5 rounded-lg bg-[#242424] hover:bg-[#2b2b2b] border border-[#333333] text-gray-200 font-bold text-xs uppercase tracking-wider transition-colors text-center">
+                Get In Touch
+            </a>
+        </div>
+
+        <!-- Requirement Note Badge -->
+        <div class="matte-card rounded-xl px-6 py-4 max-w-xl w-full flex items-center gap-4 text-left text-xs sm:text-sm text-gray-300">
+            <div class="p-2.5 rounded-lg bg-brandRed/10 text-brandRed shrink-0">
+                <i data-lucide="zap" class="w-4 h-4"></i>
+            </div>
+            <div>
+                <span class="font-semibold text-white">Fully Mobile Setup:</span> All I need at your location is access to an outdoor tap and power socket.
+            </div>
+        </div>
+    </section>
+
+    <!-- Services & Pricing Section -->
+    <section id="services" class="py-20 px-6 lg:px-12 max-w-6xl mx-auto border-t border-[#333333]">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+            <div>
+                <span class="text-xs uppercase tracking-[0.25em] font-bold text-brandRed">Transparent Pricing</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-[#fafafa] uppercase tracking-tight mt-1">Our Packages</h2>
+            </div>
+
+            <!-- Size Toggle Switch -->
+            <div class="inline-flex p-1 rounded-lg bg-[#242424] border border-[#333333]">
+                <button id="toggleHatch" onclick="setVehicleSize('hatch')" class="px-5 py-2 rounded-md font-bold text-xs transition-all bg-brandRed text-white">
+                    Hatchback / Saloon
+                </button>
+                <button id="toggleSuv" onclick="setVehicleSize('suv')" class="px-5 py-2 rounded-md font-bold text-xs transition-all text-gray-400 hover:text-white">
+                    SUV / Large Car
+                </button>
+            </div>
+        </div>
+
+        <!-- Packages Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- 1. Maintenance Valet -->
+            <div class="matte-card rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                    <div class="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">Regular Upkeep</div>
+                    <h3 class="text-lg font-bold text-white mb-2">MAINTENANCE VALET</h3>
+                    <p class="text-xs text-gray-400 font-light mb-6">Good for regular upkeep to keep the car clean and tidy.</p>
+                    
+                    <div class="text-3xl font-extrabold text-brandRed mb-6 price-display" data-hatch="£45" data-suv="£60">
+                        £45
+                    </div>
+
+                    <ul class="space-y-3 text-xs text-gray-300 mb-6 font-light">
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Hand wash and dry</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Wheels cleaned and tyres dressed</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Door shuts wiped</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Mats taken out and brushed/cleaned</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Dash, console, and door plastics wiped down</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Windows cleaned inside and out</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <button onclick="bookPackage('Maintenance Valet')" class="w-full py-3 rounded-xl bg-[#333333] hover:bg-brandRed text-white font-bold text-xs uppercase tracking-wider transition-colors">
+                    Book Package
+                </button>
+            </div>
+
+            <!-- 2. Interior Deep Clean -->
+            <div class="matte-card rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                    <div class="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">Cabin Restoration</div>
+                    <h3 class="text-lg font-bold text-white mb-2">INTERIOR DEEP CLEAN</h3>
+                    <p class="text-xs text-gray-400 font-light mb-6">Focuses entirely on getting the inside back to a clean, fresh standard.</p>
+                    
+                    <div class="text-3xl font-extrabold text-brandRed mb-6 price-display" data-hatch="£70" data-suv="£85">
+                        £70
+                    </div>
+
+                    <ul class="space-y-3 text-xs text-gray-300 mb-6 font-light">
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Deep clean on seats, carpets, and floor mats</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Stains and dirt scrubbed out of seats and carpets</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>All interior plastics and textured trim scrubbed and wiped matte</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Vents, buttons, and tight gaps brushed out</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Interior glass cleaned streak-free</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <button onclick="bookPackage('Interior Deep Clean')" class="w-full py-3 rounded-xl bg-[#333333] hover:bg-brandRed text-white font-bold text-xs uppercase tracking-wider transition-colors">
+                    Book Package
+                </button>
+            </div>
+
+            <!-- 3. Exterior Deep Clean & Paint Sealant -->
+            <div class="matte-card rounded-2xl p-6 flex flex-col justify-between">
+                <div>
+                    <div class="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-2">Paint Protection</div>
+                    <h3 class="text-lg font-bold text-white mb-2">EXTERIOR DEEP CLEAN</h3>
+                    <p class="text-xs text-gray-400 font-light mb-6">For dirty exterior paint that needs extra attention and protection.</p>
+                    
+                    <div class="text-3xl font-extrabold text-brandRed mb-6 price-display" data-hatch="£80" data-suv="£95">
+                        £80
+                    </div>
+
+                    <ul class="space-y-3 text-xs text-gray-300 mb-6 font-light">
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Full exterior wash and iron fallout remover</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Tar spots removed</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span class="text-white font-medium">Hydrophobic spray ceramic sealant applied</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Wheels, arches, and tyres detailed</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Exterior glass cleaned</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <button onclick="bookPackage('Exterior Deep Clean & Paint Sealant')" class="w-full py-3 rounded-xl bg-[#333333] hover:bg-brandRed text-white font-bold text-xs uppercase tracking-wider transition-colors">
+                    Book Package
+                </button>
+            </div>
+
+            <!-- 4. The Full Valet -->
+            <div class="matte-card rounded-2xl p-6 flex flex-col justify-between border-brandRed/60 relative">
+                <div class="absolute -top-3 right-4 px-3 py-1 rounded-full bg-brandRed text-white text-[10px] font-extrabold uppercase tracking-widest">
+                    Popular
+                </div>
+                <div>
+                    <div class="text-[11px] font-bold uppercase tracking-widest text-brandRed mb-2">Complete Package</div>
+                    <h3 class="text-lg font-bold text-white mb-2">THE FULL VALET</h3>
+                    <p class="text-xs text-gray-400 font-light mb-6">Combines both interior and exterior deep cleans for a complete job.</p>
+                    
+                    <div class="text-3xl font-extrabold text-brandRed mb-6 price-display" data-hatch="£115" data-suv="£135">
+                        £115
+                    </div>
+
+                    <ul class="space-y-3 text-xs text-gray-300 mb-6 font-light">
+                        <li class="flex items-start gap-2 font-medium text-white">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Full Exterior Deep Clean + Ceramic Sealant</span>
+                        </li>
+                        <li class="flex items-start gap-2 font-medium text-white">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Full Interior Deep Clean</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="w-1.5 h-1.5 rounded-full bg-brandRed mt-1.5 shrink-0"></span>
+                            <span>Complete showroom finish inside & out</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <button onclick="bookPackage('The Full Valet')" class="w-full py-3 rounded-xl bg-brandRed hover:bg-brandRedHover text-white font-bold text-xs uppercase tracking-wider transition-colors">
+                    Book Full Valet
+                </button>
+            </div>
+        </div>
+
+        <!-- Add-ons Box -->
+        <div class="mt-8 matte-card rounded-2xl p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div>
+                <h3 class="text-sm font-bold uppercase tracking-wider text-white mb-1">Optional Add-ons</h3>
+                <p class="text-xs text-gray-400">Enhance any package with specialized engine bay care or pet hair removal.</p>
+            </div>
+            <div class="flex flex-wrap gap-4 text-xs font-semibold">
+                <div class="px-4 py-2.5 rounded-xl bg-[#1a1a1a] border border-[#333333] flex items-center gap-3">
+                    <span class="text-gray-300">Engine Bay Clean:</span>
+                    <span class="text-brandRed font-bold">£30</span>
+                </div>
+                <div class="px-4 py-2.5 rounded-xl bg-[#1a1a1a] border border-[#333333] flex items-center gap-3">
+                    <span class="text-gray-300">Heavy Pet Hair Removal:</span>
+                    <span class="text-brandRed font-bold">£15 - £25</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery / Results Section -->
+    <section id="gallery" class="py-20 px-6 lg:px-12 max-w-6xl mx-auto border-t border-[#333333]">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+            <span class="text-xs uppercase tracking-[0.25em] font-bold text-brandRed">Immaculate Finishes</span>
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-[#fafafa] uppercase tracking-tight mt-1">Recent Work</h2>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="matte-card rounded-2xl overflow-hidden aspect-[4/3]">
+                <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=800&q=80" alt="Detailed Car Exterior" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="matte-card rounded-2xl overflow-hidden aspect-[4/3]">
+                <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80" alt="Ceramic Shine Car" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+            <div class="matte-card rounded-2xl overflow-hidden aspect-[4/3]">
+                <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80" alt="Clean Interior Cockpit" class="w-full h-full object-cover hover:scale-105 transition-transform duration-500">
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking / Contact Section -->
+    <section id="contact" class="py-20 px-6 lg:px-12 max-w-4xl mx-auto border-t border-[#333333]">
+        <div class="matte-card rounded-3xl p-8 sm:p-12 border-brandRed/30">
+            <div class="text-center max-w-xl mx-auto mb-10">
+                <span class="text-xs uppercase tracking-[0.25em] font-bold text-brandRed">Get Booked In</span>
+                <h2 class="text-3xl font-extrabold text-[#fafafa] uppercase tracking-tight mt-1">Ready to book?</h2>
+                <p class="text-xs sm:text-sm text-gray-400 font-light mt-3">
+                    Drop a message with your <strong class="text-white font-medium">postcode</strong>, <strong class="text-white font-medium">car model</strong>, and <strong class="text-white font-medium">what you need done</strong>. Feel free to ask any other questions!
+                </p>
+            </div>
+
+            <!-- Booking Form -->
+            <form id="bookingForm" onsubmit="submitBooking(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Your Name</label>
+                        <input type="text" id="bName" required placeholder="e.g. Michael Vance" class="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-[#333333] text-white text-xs focus:outline-none focus:border-brandRed">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Postcode / Town</label>
+                        <input type="text" id="bPostcode" required placeholder="e.g. Lisburn BT28" class="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-[#333333] text-white text-xs focus:outline-none focus:border-brandRed">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Car Model & Size</label>
+                        <input type="text" id="bCar" required placeholder="e.g. VW Golf (Hatchback)" class="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-[#333333] text-white text-xs focus:outline-none focus:border-brandRed">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Package / Service Needed</label>
+                        <input type="text" id="bPackage" required placeholder="e.g. The Full Valet" class="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-[#333333] text-white text-xs focus:outline-none focus:border-brandRed">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-[11px] font-bold uppercase tracking-wider text-gray-400 mb-1">Additional Notes / Questions</label>
+                    <textarea id="bNotes" rows="3" placeholder="Any specific stains, pet hair, or preferred dates..." class="w-full px-4 py-3 rounded-xl bg-[#1a1a1a] border border-[#333333] text-white text-xs focus:outline-none focus:border-brandRed"></textarea>
+                </div>
+
+                <div class="pt-2 flex flex-col sm:flex-row gap-3">
+                    <button type="submit" class="w-full py-4 rounded-xl bg-brandRed hover:bg-brandRedHover text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="send" class="w-4 h-4"></i> Send WhatsApp Message
+                    </button>
+                    <a href="tel:07849351228" class="w-full sm:w-auto px-6 py-4 rounded-xl bg-[#1a1a1a] hover:bg-[#2b2b2b] border border-[#333333] text-white font-bold text-xs uppercase tracking-wider transition-colors flex items-center justify-center gap-2">
+                        <i data-lucide="phone" class="w-4 h-4 text-brandRed"></i> Call 07849 351228
+                    </a>
+                </div>
+            </form>
+
+            <!-- Social Business Card Links -->
+            <div class="mt-10 pt-8 border-t border-[#333333] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-gray-400">
+                <div class="flex items-center gap-2 font-medium text-white">
+                    <i data-lucide="phone" class="w-4 h-4 text-brandRed"></i>
+                    <span>07849 351228</span>
+                </div>
+                <a href="https://facebook.com/VanceSpecDetailing" target="_blank" rel="noopener" class="flex items-center gap-2 text-gray-300 hover:text-white transition-colors">
+                    <i data-lucide="facebook" class="w-4 h-4 text-[#1877F2]"></i>
+                    <span>Facebook: VanceSpecDetailing</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 px-6 text-center text-xs text-gray-500 border-t border-[#333333]">
+        <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+            <span class="font-medium text-gray-400">VANCE SPEC DETAILING © <span id="year"></span>. All rights reserved.</span>
+            <span>Mobile Valeting & Detailing Across Northern Ireland</span>
+        </div>
+    </footer>
+
+    <!-- Script Logic -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            lucide.createIcons();
+            document.getElementById('year').textContent = new Date().getFullYear();
+        });
+
+        function setVehicleSize(size) {
+            const hatchBtn = document.getElementById('toggleHatch');
+            const suvBtn = document.getElementById('toggleSuv');
+            const prices = document.querySelectorAll('.price-display');
+
+            if (size === 'hatch') {
+                hatchBtn.className = "px-5 py-2 rounded-md font-bold text-xs transition-all bg-brandRed text-white";
+                suvBtn.className = "px-5 py-2 rounded-md font-bold text-xs transition-all text-gray-400 hover:text-white";
+                prices.forEach(el => el.textContent = el.getAttribute('data-hatch'));
+            } else {
+                suvBtn.className = "px-5 py-2 rounded-md font-bold text-xs transition-all bg-brandRed text-white";
+                hatchBtn.className = "px-5 py-2 rounded-md font-bold text-xs transition-all text-gray-400 hover:text-white";
+                prices.forEach(el => el.textContent = el.getAttribute('data-suv'));
+            }
+        }
+
+        function bookPackage(packageName) {
+            document.getElementById('bPackage').value = packageName;
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function submitBooking(e) {
+            e.preventDefault();
+            const name = document.getElementById('bName').value;
+            const postcode = document.getElementById('bPostcode').value;
+            const car = document.getElementById('bCar').value;
+            const pkg = document.getElementById('bPackage').value;
+            const notes = document.getElementById('bNotes').value;
+
+            const text = `Hi Vance Spec Detailing!\n\nName: ${name}\nPostcode/Town: ${postcode}\nCar Model: ${car}\nPackage/Service: ${pkg}\nNotes: ${notes}`;
+            window.open(`https://wa.me/447849351228?text=${encodeURIComponent(text)}`, '_blank');
+        }
+    </script>
+</body>
+</html>
