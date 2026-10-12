@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="seo-head(pageTitle, pageDescription)">
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${pageTitle} != null ? ${pageTitle} : 'Vance Spec Detailing | Mobile Valeting Belfast & Lisburn'">Vance Spec Detailing | Mobile Valeting Belfast & Lisburn</title>
+    <meta name="description" th:content="${pageDescription} != null ? ${pageDescription} : 'Professional mobile valeting and car detailing across Belfast, Lisburn & surrounding NI. Maintenance valets, interior deep cleans, & ceramic sealants brought to your door.'">
+    <meta name="keywords" content="mobile valeting belfast, car detailing lisburn, interior deep clean, ceramic sealant northern ireland, mobile car wash belfast">
+    <meta name="author" content="Vance Spec Detailing">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://vancespecdetailing.co.uk">
+
+    <!-- Open Graph / Facebook / WhatsApp Preview -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://vancespecdetailing.co.uk">
+    <meta property="og:title" th:content="${pageTitle} != null ? ${pageTitle} : 'Vance Spec Detailing | Mobile Valeting & Detailing'">
+    <meta property="og:description" th:content="${pageDescription} != null ? ${pageDescription} : 'Mobile valeting brought to you across Belfast, Lisburn & surrounding towns. Book your valet today.'">
+    <meta property="og:image" content="https://vancespecdetailing.co.uk/images/og-cover.jpg">
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" th:content="${pageTitle} != null ? ${pageTitle} : 'Vance Spec Detailing | Mobile Valeting & Detailing'">
+    <meta name="twitter:description" th:content="${pageDescription} != null ? ${pageDescription} : 'Mobile valeting covering Belfast, Lisburn, and surrounding towns.'">
+
+    <!-- JSON-LD Structured Data for Google Search & Map Pack -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "AutoDetailing",
+      "name": "Vance Spec Detailing",
+      "description": "Mobile valeting and detailing service covering Belfast, Lisburn, and surrounding Northern Ireland towns. Fully equipped to clean at your home or workplace.",
+      "url": "https://vancespecdetailing.co.uk",
+      "telephone": "+447849351228",
+      "priceRange": "£45 - £135",
+      "image": "https://vancespecdetailing.co.uk/images/og-cover.jpg",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Lisburn",
+        "addressRegion": "Northern Ireland",
+        "addressCountry": "UK"
+      },
+      "geo": {
+        "@type": "GeoCircle",
+        "geoMidpoint": {
+          "@type": "GeoCoordinates",
+          "latitude": 54.5162,
+          "longitude": -6.0449
+        },
+        "geoRadius": "30000"
+      },
+      "areaServed": [
+        "Belfast",
+        "Lisburn",
+        "Carryduff",
+        "Dunmurry",
+        "Hillsborough",
+        "Dromore",
+        "Crumlin"
+      ],
+      "sameAs": [
+        "https://facebook.com/VanceSpecDetailing"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Mobile Valeting Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Maintenance Valet",
+              "description": "Hand wash, dry, wheels cleaned, tyres dressed, mats cleaned, dash wiped, windows cleaned inside and out."
+            },
+            "priceSpecification": {
+              "@type": "CompoundPriceSpecification",
+              "priceCurrency": "GBP",
+              "minPrice": "45",
+              "maxPrice": "60"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Interior Deep Clean",
+              "description": "Deep clean on seats, carpets, mats, stains scrubbed out, interior plastics scrubbed, vents and gaps brushed."
+            },
+            "priceSpecification": {
+              "@type": "CompoundPriceSpecification",
+              "priceCurrency": "GBP",
+              "minPrice": "70",
+              "maxPrice": "85"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Exterior Deep Clean & Paint Sealant",
+              "description": "Full wash, iron fallout remover, tar spot removal, hydrophobic spray ceramic sealant applied."
+            },
+            "priceSpecification": {
+              "@type": "CompoundPriceSpecification",
+              "priceCurrency": "GBP",
+              "minPrice": "80",
+              "maxPrice": "95"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "The Full Valet",
+              "description": "Combines full interior deep clean and full exterior deep clean with ceramic paint sealant."
+            },
+            "priceSpecification": {
+              "@type": "CompoundPriceSpecification",
+              "priceCurrency": "GBP",
+              "minPrice": "115",
+              "maxPrice": "135"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+</head>
+</html>
