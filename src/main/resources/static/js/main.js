@@ -59,7 +59,7 @@ async function fetchAndRenderServices() {
         const response = await fetch('/api/services');
         if (!response.ok) throw new Error("Failed to fetch services");
         globalServicesData = await response.json();
-        
+
         renderServicesGrid();
         populateBookingDropdowns();
     } catch (error) {
@@ -120,9 +120,13 @@ function setupBookingCalculator() {
 
     const pkgSelect = document.getElementById("calc-package");
     const addOnCheckboxes = document.querySelectorAll(".addon-checkbox");
-    
+
     if (pkgSelect) pkgSelect.addEventListener("change", updateLiveEstimate);
     addOnCheckboxes.forEach(cb => cb.addEventListener("change", updateLiveEstimate));
+    // Re-trigger Lucide icon replacement for dynamically generated elements
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 }
 
 function populateBookingDropdowns() {
@@ -240,7 +244,7 @@ function setupForms() {
 
                 // 2. Construct professional WhatsApp message
                 const addonsText = selectedAddons.length > 0 ? selectedAddons.join(", ") : "None";
-                const whatsappMessage = 
+                const whatsappMessage =
                     `Hi Vance, I'd like to book a mobile valet!%0A%0A` +
                     `*Name:* ${name}%0A` +
                     `*Car:* ${carModel} (${currentVehicleSize.toUpperCase()})%0A` +
@@ -267,7 +271,7 @@ function setupForms() {
         } catch (err) {
             console.error(err);
             showToast("Network error. Opening WhatsApp directly...", "error");
-            
+
             // Fallback WhatsApp direct open if backend is unreachable
             const whatsappMessage = `Hi Vance, I'd like to book a valet for my ${carModel} (${currentVehicleSize}). Postcode: ${postcode}. Total: £${estimatedPrice}`;
             window.open(`https://wa.me/447849351228?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
@@ -297,11 +301,10 @@ function showToast(message, type = "success") {
 
     const toast = document.createElement("div");
     toast.id = "toast-notification";
-    toast.className = `fixed bottom-6 right-6 z-50 px-6 py-3.5 rounded-xl shadow-2xl text-sm font-bold text-white transition transform duration-300 translate-y-10 opacity-0 flex items-center space-x-3 ${
-        type === "success" ? "bg-emerald-600 border border-emerald-500" : "bg-accent-red border border-red-600"
-    }`;
+    toast.className = `fixed bottom-6 right-6 z-50 px-6 py-3.5 rounded-xl shadow-2xl text-sm font-bold text-white transition transform duration-300 translate-y-10 opacity-0 flex items-center space-x-3 ${type === "success" ? "bg-emerald-600 border border-emerald-500" : "bg-accent-red border border-red-600"
+        }`;
     toast.innerHTML = `<span>${type === "success" ? "✓" : "⚠️"}</span><span>${message}</span>`;
-    
+
     document.body.appendChild(toast);
     setTimeout(() => toast.classList.remove("translate-y-10", "opacity-0"), 50);
 
