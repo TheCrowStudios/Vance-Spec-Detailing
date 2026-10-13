@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand Palette */
+  --color-dark-bg: #1a1a1a;
+  --color-card-bg: #242424;
+  --color-accent-red: #d90429;
+  --color-text-light: #fafafa;
+
+  /* Typography */
+  --font-montserrat: 'Montserrat', sans-serif;
+}
