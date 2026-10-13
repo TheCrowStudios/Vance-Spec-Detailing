@@ -178,61 +178,90 @@ function updateLiveEstimate() {
 /* ================= 4. FORM SUBMISSIONS ================= */
 function setupForms() {
     const bookingForm = document.getElementById("booking-form");
-    if (bookingForm) {
-        bookingForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const formData = {
-                customerName: document.getElementById("book-name").value,
-                phone: document.getElementById("book-phone").value,
-                postcode: document.getElementById("book-postcode").value,
-                carModel: document.getElementById("book-car").value,
-                vehicleSize: currentVehicleSize,
-                servicePackage: document.getElementById("calc-package").value,
-                estimatedPrice: parseInt(document.getElementById("live-price").textContent.replace('£', ''), 10)
-            };
+    if (!bookingForm) return;
 
-            try {
-                const res = await fetch('/api/bookings', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData)
+    bookingForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        // Clear previous error messages
+        clearValidationErrors();
+
+        const formData = {
+            customerName: document.getElementById("book-name").value.trim(),
+            phone: document.getElementById("book-phone").value.trim(),
+            postcode: document.getElementById("book-postcode").value.trim(),
+            carModel: document.getElementById("book-car").value.trim(),
+            vehicleSize: currentVehicleSize,
+            servicePackage: document.getElementById("calc-package").value,
+            estimatedPrice: parseInt(document.getElementById("live-price").textContent.replace('£', ''), 10)
+        };
+
+        let hasError = false;
+
+        // 1. Client-side Phone Validation (matches backend regex)
+        const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
+        if (!phoneRegex.test(formData.phone)) {
+            showFieldError("book-phone", "Please enter a valid phone number.");
+            hasError = true;
+        }
+
+        // 2. Client-side NI Postcode Validation
+        const niPostcodeRegex = /^BT\d{1,2}\s?\d[A-Z]{2}$/i;
+        if (!niPostcodeRegex.test(formData.postcode)) {
+            showFieldError("book-postcode", "Please enter a valid Northern Ireland postcode (e.g. BT28 1AA)");
+            hasError = true;
+        }
+
+        if (hasError) return;
+
+        try {
+            const res = await fetch('/api/bookings', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+
+            const result = await res.json();
+
+            if (res.ok && result.success) {
+                alert("🎉 Booking inquiry submitted! Vance will reach out to you shortly.");
+                bookingForm.reset();
+                updateLiveEstimate();
+            } else if (result.errors) {
+                // Display field-specific errors returned from Spring Boot
+                Object.keys(result.errors).forEach(field => {
+                    const fieldMap = {
+                        customerName: "book-name",
+                        phone: "book-phone",
+                        postcode: "book-postcode",
+                        carModel: "book-car"
+                    };
+                    showFieldError(fieldMap[field] || field, result.errors[field]);
                 });
-                if (res.ok) {
-                    alert("Booking inquiry received! Vance will contact you shortly.");
-                    bookingForm.reset();
-                } else {
-                    alert("Submission failed. Please try calling or messaging directly.");
-                }
-            } catch (err) {
-                console.error(err);
-                alert("Network error. Please try again or message via WhatsApp.");
+            } else {
+                alert(result.message || "An error occurred. Please try calling or messaging directly.");
             }
-        });
-    }
+        } catch (err) {
+            console.error(err);
+            alert("Network error. Please check your connection or message via WhatsApp.");
+        }
+    });
+}
 
-    const contactForm = document.getElementById("contact-form");
-    if (contactForm) {
-        contactForm.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const data = {
-                name: document.getElementById("contact-name").value,
-                contact: document.getElementById("contact-info").value,
-                message: document.getElementById("contact-msg").value
-            };
+function showFieldError(inputId, message) {
+    const input = document.getElementById(inputId);
+    if (!input) return;
 
-            try {
-                const res = await fetch('/api/contact', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-                if (res.ok) {
-                    alert("Message sent successfully!");
-                    contactForm.reset();
-                }
-            } catch (err) {
-                console.error(err);
-            }
-        });
-    }
+    input.classList.add("border-accent-red");
+
+    const errorMsg = document.createElement("p");
+    errorMsg.className = "field-error-msg text-accent-red text-xs mt-1 font-semibold";
+    errorMsg.textContent = message;
+
+    input.parentNode.appendChild(errorMsg);
+}
+
+function clearValidationErrors() {
+    document.querySelectorAll(".field-error-msg").forEach(el => el.remove());
+    document.querySelectorAll("input").forEach(el => el.classList.remove("border-accent-red"));
 }
