@@ -1,108 +1,337 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" class="dark scroll-smooth" xmlns:th="http://www.thymeleaf.org">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vance Spec Detailing | Mobile Valeting Belfast & Lisburn</title>
-    <meta name="description"
-        content="Professional mobile valeting covering Belfast, Lisburn, and surrounding NI towns.">
+    <meta name="description" content="Professional mobile valeting covering Belfast, Lisburn, and surrounding NI towns.">
 
     <th:block
         th:replace="~{fragments/seo :: seo-head('Vance Spec Detailing | Mobile Valeting Belfast & Lisburn', 'Mobile valeting bringing professional detailing straight to your location in Belfast, Lisburn & surrounding areas.')}" />
-    <!-- Google Fonts Montserrat -->
+    
+    <!-- Google Fonts: Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <!-- Compiled Tailwind v4 CSS -->
     <link rel="stylesheet" th:href="@{/css/output.css}" href="../static/css/output.css">
+
+    <style>
+        .glass-panel {
+            background: rgba(36, 36, 36, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glass-card {
+            background: rgba(28, 28, 28, 0.85);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(217, 4, 41, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(217, 4, 41, 0.6);
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px -10px rgba(217, 4, 41, 0.3);
+        }
+        .text-glow {
+            text-shadow: 0 0 12px rgba(217, 4, 41, 0.6);
+        }
+        .img-comp-container {
+            position: relative;
+            user-select: none;
+        }
+        .img-comp-img {
+            position: absolute;
+            width: auto;
+            height: 100%;
+            overflow: hidden;
+        }
+        .img-comp-slider {
+            position: absolute;
+            z-index: 9;
+            cursor: ew-resize;
+            width: 40px;
+            height: 40px;
+            background-color: #d90429;
+            opacity: 0.9;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 15px rgba(217, 4, 41, 0.8);
+        }
+    </style>
 </head>
 
-<body class="bg-dark-bg text-text-light font-montserrat relative overflow-x-hidden">
+<body class="min-h-screen flex flex-col justify-between relative selection:bg-accent-red selection:text-white bg-dark-bg text-text-light font-montserrat overflow-x-hidden">
 
     <!-- Interactive Background Canvas Animation -->
     <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0"></canvas>
 
     <!-- Header / Navbar -->
-    <header class="relative z-10 border-b border-gray-800 bg-dark-bg/90 backdrop-blur sticky top-0">
-        <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
-            <div>
-                <span class="text-xl font-extrabold tracking-wider text-text-light">VANCE SPEC</span>
-                <span class="text-xl font-extrabold text-accent-red">DETAILING</span>
+    <header class="sticky top-0 z-50 glass-panel border-b border-white/10 px-4 lg:px-8 py-3.5 transition-all duration-300">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-accent-red to-red-800 flex items-center justify-center font-black text-white text-xl shadow-lg transition-transform group-hover:scale-105">
+                    VS
+                </div>
+                <div>
+                    <span class="block text-lg lg:text-xl font-extrabold tracking-wider text-text-light leading-none group-hover:text-accent-red transition-colors">
+                        VANCE SPEC
+                    </span>
+                    <span class="text-[10px] uppercase tracking-[0.25em] font-medium text-gray-400">
+                        Detailing & Valeting
+                    </span>
+                </div>
+            </a>
+
+            <nav class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide text-gray-300">
+                <a href="#services" class="hover:text-accent-red transition-colors">Packages & Pricing</a>
+                <a href="#gallery" class="hover:text-accent-red transition-colors">Previous Jobs & Gallery</a>
+                <a href="#about" class="hover:text-accent-red transition-colors">Mobile Requirements</a>
+                <a href="#booking-section" class="hover:text-accent-red transition-colors">Instant Quote</a>
+            </nav>
+
+            <div class="hidden sm:flex items-center gap-3">
+                <a href="tel:07849351228" class="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-white/5 border border-white/10 hover:border-accent-red text-xs font-semibold hover:text-accent-red transition-all">
+                    <i data-lucide="phone" class="w-3.5 h-3.5 text-accent-red"></i>
+                    <span>07849 351228</span>
+                </a>
+                <a href="#booking-section" class="px-4 py-2 rounded-lg bg-accent-red hover:bg-red-700 text-white text-xs font-bold tracking-wider uppercase shadow-lg transition-all transform hover:-translate-y-0.5">
+                    Book Now
+                </a>
             </div>
-            <div class="flex items-center space-x-6">
-                <a href="tel:07849351228"
-                    class="hidden sm:inline-block font-semibold hover:text-accent-red transition">📞 07849 351228</a>
-                <a href="https://wa.me/447849351228" target="_blank"
-                    class="bg-accent-red text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition">WhatsApp
-                    Book</a>
+
+            <button id="mobileMenuBtn" class="md:hidden p-2 rounded-lg bg-white/5 text-gray-300 hover:text-white focus:outline-none cursor-pointer">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobileMenu" class="hidden md:hidden mt-3 pt-3 border-t border-white/10 flex-col gap-3 px-2 pb-2">
+            <a href="#services" class="mobile-link py-2 text-sm font-medium text-gray-300 hover:text-accent-red">Packages & Pricing</a>
+            <a href="#gallery" class="mobile-link py-2 text-sm font-medium text-gray-300 hover:text-accent-red">Previous Jobs & Gallery</a>
+            <a href="#about" class="mobile-link py-2 text-sm font-medium text-gray-300 hover:text-accent-red">Mobile Requirements</a>
+            <a href="#booking-section" class="mobile-link py-2 text-sm font-medium text-gray-300 hover:text-accent-red">Instant Quote & Booking</a>
+            <div class="pt-2 flex flex-col gap-2">
+                <a href="tel:07849351228" class="flex items-center justify-center gap-2 py-2.5 rounded-lg bg-white/5 border border-white/10 text-xs font-semibold text-white">
+                    <i data-lucide="phone" class="w-4 h-4 text-accent-red"></i> Call 07849 351228
+                </a>
             </div>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="relative z-10 py-20 px-6 text-center max-w-4xl mx-auto">
-        <span
-            class="bg-accent-red/10 text-accent-red border border-accent-red/30 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider">Mobile
-            Valeting & Detailing</span>
-        <h1 class="text-4xl sm:text-6xl font-extrabold mt-6 mb-4 tracking-tight">Bring the Clean to You.</h1>
-        <p class="text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-8">Professional mobile valeting covering
-            Belfast, Lisburn, and surrounding towns. Fully mobile with onboard power and water access.</p>
-        <div class="flex justify-center gap-4">
-            <a href="#services"
-                class="bg-accent-red text-white px-8 py-3.5 rounded-xl font-bold hover:bg-red-700 transition">View
-                Packages</a>
-            <a href="#booking-section"
-                class="bg-card-bg border border-gray-700 px-8 py-3.5 rounded-xl font-bold hover:border-accent-red transition">Book
-                Now</a>
+    <section class="relative z-10 pt-16 lg:pt-24 pb-16 lg:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto flex flex-col items-center text-center">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent-red/10 border border-accent-red/30 text-accent-red text-xs sm:text-sm font-bold uppercase tracking-wider mb-6 animate-pulse">
+            <i data-lucide="map-pin" class="w-4 h-4"></i>
+            <span>Mobile Valeting & Detailing • Belfast, Lisburn & Surrounding Towns</span>
+        </div>
+
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white uppercase max-w-5xl leading-none mb-6">
+            BRINGING THE <span class="text-transparent bg-clip-text bg-gradient-to-r from-accent-red via-red-500 to-white">CLEAN TO YOU</span>
+        </h1>
+
+        <p class="text-base sm:text-xl text-gray-300 max-w-2xl font-light leading-relaxed mb-8">
+            Professional mobile valeting covering Belfast, Lisburn, and surrounding towns. Fully mobile with onboard power and water access.
+        </p>
+
+        <!-- Requirements Highlight Box -->
+        <div class="glass-panel rounded-2xl p-4 sm:p-5 max-w-xl w-full border border-white/10 mb-10 flex items-center justify-center gap-3 text-xs sm:text-sm text-gray-300 shadow-xl">
+            <div class="p-2 rounded-lg bg-accent-red/20 text-accent-red shrink-0">
+                <i data-lucide="zap" class="w-5 h-5"></i>
+            </div>
+            <p class="text-left">
+                <strong class="text-white font-semibold">Fully Mobile Convenience:</strong> All we need on site is access to an <span class="text-accent-red font-medium">outdoor tap</span> and <span class="text-accent-red font-medium">power socket</span>!
+            </p>
+        </div>
+
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto">
+            <a href="#services" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-accent-red hover:bg-red-700 text-white font-extrabold text-sm uppercase tracking-wider shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-center gap-3">
+                <i data-lucide="calculator" class="w-5 h-5"></i>
+                View Packages & Pricing
+            </a>
+            <a href="#booking-section" class="w-full sm:w-auto px-8 py-4 rounded-xl bg-white/5 hover:bg-white/10 border border-white/15 text-white font-bold text-sm uppercase tracking-wider transition-all flex items-center justify-center gap-2">
+                Instant Quote & Booking <i data-lucide="arrow-down" class="w-4 h-4 text-accent-red"></i>
+            </a>
+        </div>
+
+        <!-- Trust Badges Bar -->
+        <div class="mt-16 pt-8 border-t border-white/10 w-full grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-gray-400 text-xs sm:text-sm font-medium">
+            <div class="flex flex-col items-center gap-2">
+                <i data-lucide="sparkles" class="w-6 h-6 text-accent-red"></i>
+                <span>Ceramic Protection</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+                <i data-lucide="shield-check" class="w-6 h-6 text-accent-red"></i>
+                <span>100% Mobile Service</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+                <i data-lucide="award" class="w-6 h-6 text-accent-red"></i>
+                <span>Meticulous Detailing</span>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+                <i data-lucide="thumbs-up" class="w-6 h-6 text-accent-red"></i>
+                <span>Belfast & Lisburn Local</span>
+            </div>
         </div>
     </section>
 
     <!-- Vehicle Size Toggle Switch -->
-    <section class="relative z-10 max-w-4xl mx-auto px-6 mb-12 text-center">
+    <section class="relative z-10 max-w-4xl mx-auto px-6 mb-8 text-center">
         <p class="text-gray-400 text-sm mb-3">Select your vehicle size to view accurate pricing:</p>
-        <div class="inline-flex bg-card-bg border border-gray-800 p-1.5 rounded-xl">
-            <button id="size-hatch" class="px-6 py-2 rounded-lg font-bold bg-accent-red text-white transition">Hatchback
-                / Saloon</button>
-            <button id="size-suv"
-                class="px-6 py-2 rounded-lg font-bold bg-gray-800 text-gray-300 transition hover:bg-gray-700">SUV /
-                Large Car</button>
+        <div class="inline-flex bg-card-bg border border-gray-800 p-1.5 rounded-2xl shadow-lg">
+            <button id="size-hatch" class="px-6 py-2.5 rounded-xl font-bold bg-accent-red text-white transition cursor-pointer shadow-md">Hatchback / Saloon</button>
+            <button id="size-suv" class="px-6 py-2.5 rounded-xl font-bold bg-transparent text-gray-400 transition hover:text-white cursor-pointer">SUV / Large Car</button>
         </div>
     </section>
 
     <!-- Services Grid (Dynamically Populated from Backend) -->
     <section id="services" class="relative z-10 max-w-6xl mx-auto px-6 py-12">
-        <h2 class="text-3xl font-extrabold text-center mb-10">Our Packages</h2>
+        <div class="text-center max-w-3xl mx-auto mb-12">
+            <h2 class="text-xs uppercase tracking-[0.3em] font-extrabold text-accent-red mb-3">Our Valeting Packages</h2>
+            <p class="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">Tailored Care For Every Vehicle</p>
+            <p class="mt-3 text-gray-400 text-sm sm:text-base">Professional chemical treatments and equipment brought straight to your driveway.</p>
+        </div>
         <div id="services-container" class="grid md:grid-cols-2 gap-8">
-            <div class="text-center py-12 text-gray-500 col-span-2">Loading live service packages from server...</div>
+            <div class="text-center py-16 text-gray-500 col-span-2 glass-panel rounded-2xl border border-gray-800">Loading live service packages from server...</div>
         </div>
     </section>
 
-    <!-- Interactive Booking & Quote Calculator -->
+    <!-- Expanded Previous Jobs & Interactive Gallery Section -->
+    <section id="gallery" class="relative z-10 py-16 lg:py-24 bg-black/40 border-y border-white/10 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h2 class="text-xs uppercase tracking-[0.3em] font-extrabold text-accent-red mb-3">Portfolio & Results</h2>
+                <p class="text-3xl sm:text-4xl font-black text-white tracking-tight uppercase">Previous Jobs & Transformations</p>
+                <p class="mt-3 text-gray-400 text-sm">Explore our recent mobile valeting work across Belfast and Lisburn, and drag the slider to see before and after.</p>
+            </div>
+
+            <!-- Interactive Before & After Slider Component -->
+            <div class="max-w-4xl mx-auto relative rounded-2xl overflow-hidden border border-accent-red/30 shadow-2xl h-[320px] sm:h-[480px] img-comp-container mb-16" id="comparisonSlider">
+                <div class="absolute inset-0 w-full h-full">
+                    <img src="https://images.unsplash.com/photo-1617814076367-b759c7d7e738?auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover" alt="After Gloss Finish">
+                    <span class="absolute top-4 right-4 bg-accent-red text-white text-xs font-black uppercase px-3 py-1 rounded-md shadow-md z-10">AFTER (VANCE SPEC)</span>
+                </div>
+                <div class="img-comp-img inset-0 h-full overflow-hidden" id="beforeImageWrapper" style="width: 50%;">
+                    <img src="https://images.unsplash.com/photo-1507136566006-cfc505b114fe?auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover filter contrast-125 brightness-75 grayscale-[30%]" alt="Before Dirty Finish">
+                    <span class="absolute top-4 left-4 bg-black/80 border border-white/20 text-gray-300 text-xs font-black uppercase px-3 py-1 rounded-md shadow-md z-10">BEFORE</span>
+                </div>
+                <div class="img-comp-slider flex items-center justify-center text-white" id="sliderHandle" style="top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <i data-lucide="chevrons-left-right" class="w-5 h-5"></i>
+                </div>
+            </div>
+
+            <!-- Previous Jobs Photo Grid Showcase -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Job Card 1 -->
+                <div class="glass-card rounded-2xl overflow-hidden group">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Full Valet Hatchback">
+                        <span class="absolute top-3 left-3 bg-accent-red text-white text-[10px] font-bold uppercase px-2.5 py-1 rounded">Full Valet</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="font-extrabold text-white text-base mb-1">VW Golf GTI • Lisburn</h4>
+                        <p class="text-xs text-gray-400">Exterior decontamination and paint ceramic sealant enhancement on customer driveway.</p>
+                    </div>
+                </div>
+
+                <!-- Job Card 2 -->
+                <div class="glass-card rounded-2xl overflow-hidden group">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1542282088-72c9c27ed0cd?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Interior Deep Clean">
+                        <span class="absolute top-3 left-3 bg-accent-red text-white text-[10px] font-bold uppercase px-2.5 py-1 rounded">Interior Deep Clean</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="font-extrabold text-white text-base mb-1">BMW X5 • Belfast</h4>
+                        <p class="text-xs text-gray-400">Hot water carpet extraction and leather conditioning package removing heavy stains.</p>
+                    </div>
+                </div>
+
+                <!-- Job Card 3 -->
+                <div class="glass-card rounded-2xl overflow-hidden group">
+                    <div class="h-56 overflow-hidden relative">
+                        <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80" class="w-full h-full object-cover transition duration-500 group-hover:scale-105" alt="Ceramic Protection">
+                        <span class="absolute top-3 left-3 bg-accent-red text-white text-[10px] font-bold uppercase px-2.5 py-1 rounded">Ceramic Finish</span>
+                    </div>
+                    <div class="p-5">
+                        <h4 class="font-extrabold text-white text-base mb-1">Audi RS3 • Newtownabbey</h4>
+                        <p class="text-xs text-gray-400">Hydrophobic spray ceramic protection applied with wheel iron fallout decontamination.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Coverage Areas & Mobile Setup Info -->
+    <section id="about" class="relative z-10 py-16 lg:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <span class="text-xs font-extrabold uppercase tracking-[0.3em] text-accent-red">Fully Mobile Convenience</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-white uppercase mt-2 mb-6">Valeting Direct To Your Driveway</h2>
+                <p class="text-gray-300 text-sm leading-relaxed mb-6">
+                    We bring all professional equipment and premium products straight to your location across Belfast, Lisburn, and surrounding areas.
+                </p>
+                <div class="p-6 rounded-2xl bg-white/5 border border-accent-red/30 mb-8 space-y-4">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-wider flex items-center gap-2">
+                        <i data-lucide="check-square" class="w-5 h-5 text-accent-red"></i> What We Need On Site:
+                    </h3>
+                    <div class="flex items-center gap-3 text-sm text-gray-200">
+                        <div class="w-8 h-8 rounded-lg bg-accent-red/20 flex items-center justify-center text-accent-red font-bold shrink-0">1</div>
+                        <span>Access to an <strong>outdoor tap</strong>.</span>
+                    </div>
+                    <div class="flex items-center gap-3 text-sm text-gray-200">
+                        <div class="w-8 h-8 rounded-lg bg-accent-red/20 flex items-center justify-center text-accent-red font-bold shrink-0">2</div>
+                        <span>Access to a standard <strong>power socket</strong>.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="glass-panel rounded-3xl p-8 border border-white/10 shadow-2xl text-center flex flex-col items-center">
+                <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-accent-red to-red-800 flex items-center justify-center font-black text-white text-3xl shadow-lg mb-6">
+                    VS
+                </div>
+                <h3 class="text-2xl font-black text-white tracking-wider uppercase mb-1">VANCE SPEC DETAILING</h3>
+                <p class="text-xs uppercase tracking-[0.25em] text-gray-400 mb-6">Mobile Valeting Northern Ireland</p>
+                <a href="tel:07849351228" class="flex items-center justify-center gap-3 p-3.5 rounded-xl bg-white/5 hover:bg-accent-red/20 border border-white/10 text-white font-bold w-full transition-all">
+                    <i data-lucide="phone" class="w-5 h-5 text-accent-red"></i> 07849 351228
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Booking & Quote Calculator Section -->
     <section id="booking-section" class="relative z-10 max-w-3xl mx-auto px-6 py-16">
-        <div class="bg-card-bg border border-gray-800 rounded-2xl p-8 shadow-2xl">
-            <h2 class="text-2xl font-extrabold mb-2 text-center">Book Your Valet</h2>
-            <p class="text-gray-400 text-center text-sm mb-8">Choose your package and add-ons for an instant quote.</p>
+        <div class="glass-panel border border-accent-red/40 rounded-3xl p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-accent-red/5 rounded-full blur-2xl pointer-events-none"></div>
+
+            <div class="text-center mb-8">
+                <span class="text-accent-red font-bold text-xs uppercase tracking-widest bg-accent-red/10 px-3 py-1 rounded-full">Instant Quote & Database Save</span>
+                <h2 class="text-3xl font-black text-white uppercase mt-3 mb-2">Book Your Valet</h2>
+                <p class="text-gray-400 text-sm">Choose your package and add-ons for an instant quote.</p>
+            </div>
 
             <form id="booking-form" class="space-y-6">
                 <div>
-                    <label class="block text-sm font-semibold mb-2">Select Package</label>
-                    <select id="calc-package"
-                        class="w-full bg-dark-bg border border-gray-700 rounded-xl px-4 py-3 text-text-light focus:border-accent-red outline-none">
+                    <label class="block text-sm font-semibold mb-2 text-gray-300">Select Package</label>
+                    <select id="calc-package" class="w-full bg-dark-bg border border-gray-700 rounded-xl px-4 py-3 text-text-light focus:border-accent-red outline-none">
                         <!-- Populated dynamically from JavaScript -->
                     </select>
                 </div>
 
                 <div>
-                    <label class="block text-sm font-semibold mb-2">Optional Add-ons</label>
+                    <label class="block text-sm font-semibold mb-2 text-gray-300">Optional Add-ons</label>
                     <div class="space-y-2 bg-dark-bg/50 border border-gray-800 p-4 rounded-xl">
                         <label class="flex items-center justify-between cursor-pointer">
                             <span class="text-sm text-gray-300">Engine Bay Clean (+£30)</span>
-                            <input type="checkbox" value="30" class="addon-checkbox accent-accent-red w-4 h-4">
+                            <input type="checkbox" value="30" class="addon-checkbox accent-accent-red w-4 h-4 rounded cursor-pointer">
                         </label>
                         <label class="flex items-center justify-between cursor-pointer">
                             <span class="text-sm text-gray-300">Heavy Pet Hair Removal (+£20 avg)</span>
-                            <input type="checkbox" value="20" class="addon-checkbox accent-accent-red w-4 h-4">
+                            <input type="checkbox" value="20" class="addon-checkbox accent-accent-red w-4 h-4 rounded cursor-pointer">
                         </label>
                     </div>
                 </div>
@@ -116,27 +345,39 @@
                 </div>
 
                 <div class="grid sm:grid-cols-2 gap-4">
-                    <input type="text" id="book-name" placeholder="Your Name" required
-                        class="bg-dark-bg border border-gray-700 rounded-xl px-4 py-3 text-text-light focus:border-accent-red outline-none">
-                    <input type="tel" id="book-phone" placeholder="Phone Number" required
-                        class="bg-dark-bg border border-gray-700 rounded-xl px-4 py-3 text-text-light focus:border-accent-red outline-none">
-                    <input type="text" id="book-postcode" placeholder="Postcode (e.g. BT28)" required
-                        class="bg-dark-bg border border-gray-700 rounded-xl px-4 py-3 text-text-light focus:border-accent-red outline-none">
-                    <input type="text" id="book-car" placeholder="Car Model (e.g. VW Golf)" required
-                        class="bg-dark-bg border border-gray-700 rounded-xl px-4 py-3 text-text-light focus:border-accent-red outline-none">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-1">Your Name *</label>
+                        <input type="text" id="book-name" placeholder="John Smith" required class="w-full bg-dark-bg border border-gray-700 rounded-xl px-4 py-3 text-text-light focus:border-accent-red outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-1">Phone Number *</label>
+                        <input type="tel" id="book-phone" placeholder="07849351228" required class="w-full bg-dark-bg border border-gray-700 rounded-xl px-4 py-3 text-text-light focus:border-accent-red outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-1">Postcode *</label>
+                        <input type="text" id="book-postcode" placeholder="BT28 1AA" required class="w-full bg-dark-bg border border-gray-700 rounded-xl px-4 py-3 text-text-light focus:border-accent-red outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-400 mb-1">Car Model *</label>
+                        <input type="text" id="book-car" placeholder="VW Golf" required class="w-full bg-dark-bg border border-gray-700 rounded-xl px-4 py-3 text-text-light focus:border-accent-red outline-none">
+                    </div>
                 </div>
 
-                <button type="submit"
-                    class="w-full bg-accent-red text-white py-4 rounded-xl font-bold hover:bg-red-700 transition cursor-pointer">
-                    Submit Booking Inquiry
-                </button>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                    <button type="submit" class="py-3.5 rounded-xl bg-accent-red hover:bg-red-700 text-white font-extrabold text-xs uppercase tracking-wider shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <i data-lucide="database" class="w-4 h-4"></i> Book via Website
+                    </button>
+                    <button type="button" id="btn-book-whatsapp" class="py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer">
+                        <i data-lucide="message-circle" class="w-4 h-4"></i> Book via WhatsApp
+                    </button>
+                </div>
             </form>
         </div>
     </section>
 
     <!-- Footer -->
     <footer class="relative z-10 border-t border-gray-800 py-12 text-center text-gray-500 text-sm">
-        <p class="mb-2">Vance Spec Detailing - Fully mobile across Belfast, Lisburn & surrounding areas.</p>
+        <p class="mb-2">Vance Spec Detailing — Fully mobile across Belfast, Lisburn & surrounding areas.</p>
         <p>Call or WhatsApp: <a href="tel:07849351228" class="text-accent-red font-semibold">07849 351228</a></p>
     </footer>
 

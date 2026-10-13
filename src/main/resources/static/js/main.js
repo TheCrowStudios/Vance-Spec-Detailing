@@ -64,7 +64,7 @@ async function fetchAndRenderServices() {
         populateBookingDropdowns();
     } catch (error) {
         console.error("Error loading services from backend:", error);
-        container.innerHTML = `<p class="text-center text-accentRed col-span-2">Unable to load live service packages. Please check back soon.</p>`;
+        container.innerHTML = `<p class="text-center text-accent-red col-span-2 py-8">Unable to load live service packages. Please check back soon.</p>`;
     }
 }
 
@@ -74,22 +74,21 @@ function renderServicesGrid() {
 
     globalServicesData.forEach(pkg => {
         const price = currentVehicleSize === 'hatchback' ? pkg.hatchbackPrice : pkg.suvPrice;
-        
-        const featuresHtml = pkg.features.map(f => `<li class="flex items-start text-sm text-gray-300"><span class="text-accentRed mr-2">✓</span> ${f}</li>`).join("");
+        const featuresHtml = pkg.features.map(f => `<li class="flex items-start text-sm text-gray-300"><span class="text-accent-red mr-2 font-bold">✓</span> ${f}</li>`).join("");
 
         const card = document.createElement("div");
-        card.className = "bg-cardBg border border-gray-800 rounded-xl p-6 flex flex-col justify-between shadow-lg transition hover:border-accentRed";
+        card.className = "bg-card-bg border border-gray-800 rounded-2xl p-7 flex flex-col justify-between shadow-xl transition hover:border-accent-red/60 hover:-translate-y-1 duration-300";
         card.innerHTML = `
             <div>
                 <div class="flex justify-between items-start mb-4">
-                    <h3 class="text-xl font-bold text-textLight">${pkg.name}</h3>
-                    <span class="text-2xl font-extrabold text-accentRed">£${price}</span>
+                    <h3 class="text-xl font-extrabold text-text-light tracking-wide">${pkg.name}</h3>
+                    <span class="text-2xl font-black text-accent-red">£${price}</span>
                 </div>
-                <p class="text-gray-400 text-sm mb-6">${pkg.description}</p>
-                <ul class="space-y-2 mb-6">${featuresHtml}</ul>
+                <p class="text-gray-400 text-sm mb-6 leading-relaxed">${pkg.description}</p>
+                <ul class="space-y-2.5 mb-8">${featuresHtml}</ul>
             </div>
-            <button onclick="selectPackageForBooking('${pkg.id}')" class="w-full bg-accentRed text-white py-2.5 rounded-lg font-semibold hover:bg-red-700 transition">
-                Book This Package
+            <button onclick="selectPackageForBooking('${pkg.id}')" class="w-full bg-accent-red text-white py-3 rounded-xl font-bold hover:bg-red-700 transition cursor-pointer shadow-lg shadow-accent-red/20">
+                Configure & Book
             </button>
         `;
         container.appendChild(card);
@@ -104,16 +103,16 @@ function setupBookingCalculator() {
     if (btnHatch && btnSuv) {
         btnHatch.addEventListener("click", () => {
             currentVehicleSize = 'hatchback';
-            btnHatch.className = "px-4 py-2 rounded-lg font-bold bg-accentRed text-white transition";
-            btnSuv.className = "px-4 py-2 rounded-lg font-bold bg-gray-800 text-gray-300 transition hover:bg-gray-700";
+            btnHatch.className = "px-6 py-2.5 rounded-xl font-bold bg-accent-red text-white shadow-md transition";
+            btnSuv.className = "px-6 py-2.5 rounded-xl font-bold bg-transparent text-gray-400 transition hover:text-white";
             renderServicesGrid();
             updateLiveEstimate();
         });
 
         btnSuv.addEventListener("click", () => {
             currentVehicleSize = 'suv';
-            btnSuv.className = "px-4 py-2 rounded-lg font-bold bg-accentRed text-white transition";
-            btnHatch.className = "px-4 py-2 rounded-lg font-bold bg-gray-800 text-gray-300 transition hover:bg-gray-700";
+            btnSuv.className = "px-6 py-2.5 rounded-xl font-bold bg-accent-red text-white shadow-md transition";
+            btnHatch.className = "px-6 py-2.5 rounded-xl font-bold bg-transparent text-gray-400 transition hover:text-white";
             renderServicesGrid();
             updateLiveEstimate();
         });
@@ -133,7 +132,8 @@ function populateBookingDropdowns() {
     globalServicesData.forEach(pkg => {
         const opt = document.createElement("option");
         opt.value = pkg.id;
-        opt.textContent = `${pkg.name} (£${currentVehicleSize === 'hatchback' ? pkg.hatchbackPrice : pkg.suvPrice})`;
+        const price = currentVehicleSize === 'hatchback' ? pkg.hatchbackPrice : pkg.suvPrice;
+        opt.textContent = `${pkg.name} (£${price})`;
         select.appendChild(opt);
     });
     updateLiveEstimate();
@@ -157,7 +157,6 @@ function updateLiveEstimate() {
     const pkg = globalServicesData.find(p => p.id === selectedPkgId);
     if (!pkg) return;
 
-    // Update dropdown labels dynamically for active size
     Array.from(pkgSelect.options).forEach(opt => {
         const pObj = globalServicesData.find(p => p.id === opt.value);
         if (pObj) {
@@ -167,54 +166,67 @@ function updateLiveEstimate() {
     });
 
     let total = currentVehicleSize === 'hatchback' ? pkg.hatchbackPrice : pkg.suvPrice;
+    let addonNames = [];
 
     document.querySelectorAll(".addon-checkbox:checked").forEach(cb => {
         total += parseInt(cb.value, 10);
+        addonNames.push(cb.getAttribute("data-name"));
     });
 
     priceDisplay.textContent = `£${total}`;
 }
 
-/* ================= 4. FORM SUBMISSIONS ================= */
+/* ================= 4. FORM SUBMISSION & WHATSAPP INTEGRATION ================= */
 function setupForms() {
     const bookingForm = document.getElementById("booking-form");
     if (!bookingForm) return;
 
     bookingForm.addEventListener("submit", async (e) => {
         e.preventDefault();
-        
-        // Clear previous error messages
         clearValidationErrors();
 
-        const formData = {
-            customerName: document.getElementById("book-name").value.trim(),
-            phone: document.getElementById("book-phone").value.trim(),
-            postcode: document.getElementById("book-postcode").value.trim(),
-            carModel: document.getElementById("book-car").value.trim(),
-            vehicleSize: currentVehicleSize,
-            servicePackage: document.getElementById("calc-package").value,
-            estimatedPrice: parseInt(document.getElementById("live-price").textContent.replace('£', ''), 10)
-        };
+        const name = document.getElementById("book-name").value.trim();
+        const phone = document.getElementById("book-phone").value.trim();
+        const postcode = document.getElementById("book-postcode").value.trim();
+        const carModel = document.getElementById("book-car").value.trim();
+        const pkgSelect = document.getElementById("calc-package");
+        const selectedPkgObj = globalServicesData.find(p => p.id === pkgSelect.value);
+        const estimatedPrice = parseInt(document.getElementById("live-price").textContent.replace('£', ''), 10);
 
         let hasError = false;
 
-        // 1. Client-side Phone Validation (matches backend regex)
         const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
-        if (!phoneRegex.test(formData.phone)) {
+        if (!phoneRegex.test(phone)) {
             showFieldError("book-phone", "Please enter a valid phone number.");
             hasError = true;
         }
 
-        // 2. Client-side NI Postcode Validation
-        const niPostcodeRegex = /^BT\d{1,2}\s?\d[A-Z]{2}$/i;
-        if (!niPostcodeRegex.test(formData.postcode)) {
-            showFieldError("book-postcode", "Please enter a valid Northern Ireland postcode (e.g. BT28 1AA)");
+        const niPostcodeRegex = /^BT\d{1,2}\s?[0-9][A-Z]{2}$/i;
+        if (!niPostcodeRegex.test(postcode)) {
+            showFieldError("book-postcode", "Enter a valid NI postcode (e.g. BT28 1AA)");
             hasError = true;
         }
 
         if (hasError) return;
 
+        // Collect add-ons
+        let selectedAddons = [];
+        document.querySelectorAll(".addon-checkbox:checked").forEach(cb => {
+            selectedAddons.push(cb.getAttribute("data-name"));
+        });
+
+        const formData = {
+            customerName: name,
+            phone: phone,
+            postcode: postcode.toUpperCase(),
+            carModel: carModel,
+            vehicleSize: currentVehicleSize,
+            servicePackage: selectedPkgObj ? selectedPkgObj.name : pkgSelect.value,
+            estimatedPrice: estimatedPrice
+        };
+
         try {
+            // 1. Save inquiry to backend (MariaDB & Discord notification)
             const res = await fetch('/api/bookings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -224,44 +236,77 @@ function setupForms() {
             const result = await res.json();
 
             if (res.ok && result.success) {
-                alert("🎉 Booking inquiry submitted! Vance will reach out to you shortly.");
+                showToast("Booking saved! Opening WhatsApp...", "success");
+
+                // 2. Construct professional WhatsApp message
+                const addonsText = selectedAddons.length > 0 ? selectedAddons.join(", ") : "None";
+                const whatsappMessage = 
+                    `Hi Vance, I'd like to book a mobile valet!%0A%0A` +
+                    `*Name:* ${name}%0A` +
+                    `*Car:* ${carModel} (${currentVehicleSize.toUpperCase()})%0A` +
+                    `*Package:* ${selectedPkgObj ? selectedPkgObj.name : ''}%0A` +
+                    `*Add-ons:* ${addonsText}%0A` +
+                    `*Postcode:* ${postcode.toUpperCase()}%0A` +
+                    `*Estimated Total:* £${estimatedPrice}`;
+
+                setTimeout(() => {
+                    window.open(`https://wa.me/447849351228?text=${whatsappMessage}`, '_blank');
+                }, 800);
+
                 bookingForm.reset();
                 updateLiveEstimate();
             } else if (result.errors) {
-                // Display field-specific errors returned from Spring Boot
                 Object.keys(result.errors).forEach(field => {
-                    const fieldMap = {
-                        customerName: "book-name",
-                        phone: "book-phone",
-                        postcode: "book-postcode",
-                        carModel: "book-car"
-                    };
+                    const fieldMap = { customerName: "book-name", phone: "book-phone", postcode: "book-postcode", carModel: "book-car" };
                     showFieldError(fieldMap[field] || field, result.errors[field]);
                 });
+                showToast("Please correct the highlighted errors.", "error");
             } else {
-                alert(result.message || "An error occurred. Please try calling or messaging directly.");
+                showToast(result.message || "Submission failed. Please message via WhatsApp directly.", "error");
             }
         } catch (err) {
             console.error(err);
-            alert("Network error. Please check your connection or message via WhatsApp.");
+            showToast("Network error. Opening WhatsApp directly...", "error");
+            
+            // Fallback WhatsApp direct open if backend is unreachable
+            const whatsappMessage = `Hi Vance, I'd like to book a valet for my ${carModel} (${currentVehicleSize}). Postcode: ${postcode}. Total: £${estimatedPrice}`;
+            window.open(`https://wa.me/447849351228?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
         }
     });
 }
 
+/* ================= 5. UI HELPERS (TOAST & ERRORS) ================= */
 function showFieldError(inputId, message) {
     const input = document.getElementById(inputId);
     if (!input) return;
-
     input.classList.add("border-accent-red");
-
     const errorMsg = document.createElement("p");
-    errorMsg.className = "field-error-msg text-accent-red text-xs mt-1 font-semibold";
+    errorMsg.className = "field-error-msg text-accent-red text-xs mt-1.5 font-semibold";
     errorMsg.textContent = message;
-
     input.parentNode.appendChild(errorMsg);
 }
 
 function clearValidationErrors() {
     document.querySelectorAll(".field-error-msg").forEach(el => el.remove());
     document.querySelectorAll("input").forEach(el => el.classList.remove("border-accent-red"));
+}
+
+function showToast(message, type = "success") {
+    const existingToast = document.getElementById("toast-notification");
+    if (existingToast) existingToast.remove();
+
+    const toast = document.createElement("div");
+    toast.id = "toast-notification";
+    toast.className = `fixed bottom-6 right-6 z-50 px-6 py-3.5 rounded-xl shadow-2xl text-sm font-bold text-white transition transform duration-300 translate-y-10 opacity-0 flex items-center space-x-3 ${
+        type === "success" ? "bg-emerald-600 border border-emerald-500" : "bg-accent-red border border-red-600"
+    }`;
+    toast.innerHTML = `<span>${type === "success" ? "✓" : "⚠️"}</span><span>${message}</span>`;
+    
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.remove("translate-y-10", "opacity-0"), 50);
+
+    setTimeout(() => {
+        toast.classList.add("translate-y-10", "opacity-0");
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
 }
