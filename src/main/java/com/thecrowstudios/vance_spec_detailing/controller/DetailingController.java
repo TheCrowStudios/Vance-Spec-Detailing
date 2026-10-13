@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller 
 @CrossOrigin(origins = "*") // Allows your frontend to connect smoothly
 public class DetailingController {
-    @GetMapping("/design1")
+    @GetMapping("/")
     public String getIndex() {
         return "index";
     }
