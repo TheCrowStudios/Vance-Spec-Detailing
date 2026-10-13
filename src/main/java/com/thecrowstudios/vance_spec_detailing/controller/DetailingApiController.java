@@ -5,13 +5,17 @@ import com.thecrowstudios.vance_spec_detailing.model.ContactMessage;
 import com.thecrowstudios.vance_spec_detailing.model.ServicePackage;
 import com.thecrowstudios.vance_spec_detailing.repository.BookingRepository;
 import com.thecrowstudios.vance_spec_detailing.repository.ContactRepository;
+
 import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+
+import com.thecrowstudios.vance_spec_detailing.service.NotificationService;
 
 @RestController
 @RequestMapping("/api")
@@ -23,6 +27,9 @@ public class DetailingApiController {
 
     @Autowired
     private ContactRepository contactRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
     /**
      * GET /api/services
@@ -92,6 +99,7 @@ public class DetailingApiController {
     @PostMapping("/bookings")
     public ResponseEntity<?> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
         BookingRequest savedBooking = bookingRepository.save(bookingRequest);
+        notificationService.sendBookingNotification(savedBooking);
         return ResponseEntity.ok(ApiResponse.success("Booking request received successfully!", savedBooking));
     }
 
