@@ -1382,6 +1382,9 @@
     .hover\:bg-\[\#2b2b2b\]:hover {
       background-color: #2b2b2b;
     }
+    .hover\:bg-accent-red:hover {
+      background-color: var(--color-accent-red);
+    }
     .hover\:bg-accent-red\/20:hover {
       background-color: color-mix(in srgb, #d90429 20%, transparent);
     }

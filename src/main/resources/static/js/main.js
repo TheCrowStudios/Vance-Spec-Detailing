@@ -2,7 +2,12 @@ document.addEventListener("DOMContentLoaded", () => {
     initCanvasAnimation();
     fetchAndRenderServices();
     setupBookingCalculator();
-    setupForms();
+    setupBookingActions();
+    
+    // Initialize Lucide icons on page load
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 });
 
 /* ================= 1. BACKGROUND CANVAS ANIMATION ================= */
@@ -70,29 +75,37 @@ async function fetchAndRenderServices() {
 
 function renderServicesGrid() {
     const container = document.getElementById("services-container");
+    if (!container) return;
     container.innerHTML = "";
 
     globalServicesData.forEach(pkg => {
         const price = currentVehicleSize === 'hatchback' ? pkg.hatchbackPrice : pkg.suvPrice;
-        const featuresHtml = pkg.features.map(f => `<li class="flex items-start text-sm text-gray-300"><span class="text-accent-red mr-2 font-bold">✓</span> ${f}</li>`).join("");
+        const featuresHtml = pkg.features.map(f => `<li class="flex items-start text-xs text-gray-300"><i data-lucide="check-circle-2" class="w-4 h-4 text-accent-red shrink-0 mt-0.5 mr-2"></i><span>${f}</span></li>`).join("");
 
         const card = document.createElement("div");
-        card.className = "bg-card-bg border border-gray-800 rounded-2xl p-7 flex flex-col justify-between shadow-xl transition hover:border-accent-red/60 hover:-translate-y-1 duration-300";
+        card.className = "glass-card rounded-2xl p-6 flex flex-col justify-between relative overflow-hidden group";
         card.innerHTML = `
             <div>
-                <div class="flex justify-between items-start mb-4">
-                    <h3 class="text-xl font-extrabold text-text-light tracking-wide">${pkg.name}</h3>
-                    <span class="text-2xl font-black text-accent-red">£${price}</span>
+                <div class="text-xs font-bold uppercase tracking-wider text-gray-400 mb-1">Package</div>
+                <h3 class="text-xl font-extrabold text-white mb-2 group-hover:text-accent-red transition-colors">${pkg.name}</h3>
+                <p class="text-xs text-gray-400 mb-4">${pkg.description}</p>
+                <div class="py-3 px-4 rounded-xl bg-white/5 border border-white/10 mb-6 flex items-baseline gap-1">
+                    <span class="text-3xl font-black text-accent-red price-val">£${price}</span>
+                    <span class="text-xs text-gray-400 font-medium">/ ${currentVehicleSize === 'hatchback' ? 'Hatchback' : 'SUV'}</span>
                 </div>
-                <p class="text-gray-400 text-sm mb-6 leading-relaxed">${pkg.description}</p>
-                <ul class="space-y-2.5 mb-8">${featuresHtml}</ul>
+                <ul class="space-y-2.5 text-xs text-gray-300 mb-6">${featuresHtml}</ul>
             </div>
-            <button onclick="selectPackageForBooking('${pkg.id}')" class="w-full bg-accent-red text-white py-3 rounded-xl font-bold hover:bg-red-700 transition cursor-pointer shadow-lg shadow-accent-red/20">
+            <button onclick="selectPackageForBooking('${pkg.id}')" class="w-full py-3 rounded-xl bg-white/10 hover:bg-accent-red text-white font-bold text-xs uppercase tracking-wider transition-all cursor-pointer">
                 Configure & Book
             </button>
         `;
         container.appendChild(card);
     });
+
+    // Re-trigger Lucide icon replacement for dynamically generated elements
+    if (typeof lucide !== 'undefined') {
+        lucide.createIcons();
+    }
 }
 
 /* ================= 3. VEHICLE SIZE & CALCULATOR ================= */
@@ -103,16 +116,16 @@ function setupBookingCalculator() {
     if (btnHatch && btnSuv) {
         btnHatch.addEventListener("click", () => {
             currentVehicleSize = 'hatchback';
-            btnHatch.className = "px-6 py-2.5 rounded-xl font-bold bg-accent-red text-white shadow-md transition";
-            btnSuv.className = "px-6 py-2.5 rounded-xl font-bold bg-transparent text-gray-400 transition hover:text-white";
+            btnHatch.className = "px-6 py-2.5 rounded-xl font-bold bg-accent-red text-white transition cursor-pointer shadow-md";
+            btnSuv.className = "px-6 py-2.5 rounded-xl font-bold bg-transparent text-gray-400 transition hover:text-white cursor-pointer";
             renderServicesGrid();
             updateLiveEstimate();
         });
 
         btnSuv.addEventListener("click", () => {
             currentVehicleSize = 'suv';
-            btnSuv.className = "px-6 py-2.5 rounded-xl font-bold bg-accent-red text-white shadow-md transition";
-            btnHatch.className = "px-6 py-2.5 rounded-xl font-bold bg-transparent text-gray-400 transition hover:text-white";
+            btnSuv.className = "px-6 py-2.5 rounded-xl font-bold bg-accent-red text-white transition cursor-pointer shadow-md";
+            btnHatch.className = "px-6 py-2.5 rounded-xl font-bold bg-transparent text-gray-400 transition hover:text-white cursor-pointer";
             renderServicesGrid();
             updateLiveEstimate();
         });
@@ -123,10 +136,6 @@ function setupBookingCalculator() {
 
     if (pkgSelect) pkgSelect.addEventListener("change", updateLiveEstimate);
     addOnCheckboxes.forEach(cb => cb.addEventListener("change", updateLiveEstimate));
-    // Re-trigger Lucide icon replacement for dynamically generated elements
-    if (typeof lucide !== 'undefined') {
-        lucide.createIcons();
-    }
 }
 
 function populateBookingDropdowns() {
@@ -155,7 +164,7 @@ function selectPackageForBooking(packageId) {
 function updateLiveEstimate() {
     const pkgSelect = document.getElementById("calc-package");
     const priceDisplay = document.getElementById("live-price");
-    if (!pkgSelect || !priceDisplay) return;
+    if (!pkgSelect || !priceDisplay || globalServicesData.length === 0) return;
 
     const selectedPkgId = pkgSelect.value;
     const pkg = globalServicesData.find(p => p.id === selectedPkgId);
@@ -170,67 +179,28 @@ function updateLiveEstimate() {
     });
 
     let total = currentVehicleSize === 'hatchback' ? pkg.hatchbackPrice : pkg.suvPrice;
-    let addonNames = [];
 
     document.querySelectorAll(".addon-checkbox:checked").forEach(cb => {
         total += parseInt(cb.value, 10);
-        addonNames.push(cb.getAttribute("data-name"));
     });
 
     priceDisplay.textContent = `£${total}`;
 }
 
-/* ================= 4. FORM SUBMISSION & WHATSAPP INTEGRATION ================= */
-function setupForms() {
+/* ================= 4. SEPARATE BOOKING ACTIONS (WEBSITE vs WHATSAPP) ================= */
+function setupBookingActions() {
     const bookingForm = document.getElementById("booking-form");
     if (!bookingForm) return;
 
+    // Handle "Book via Website" (Database + Discord)
     bookingForm.addEventListener("submit", async (e) => {
         e.preventDefault();
         clearValidationErrors();
 
-        const name = document.getElementById("book-name").value.trim();
-        const phone = document.getElementById("book-phone").value.trim();
-        const postcode = document.getElementById("book-postcode").value.trim();
-        const carModel = document.getElementById("book-car").value.trim();
-        const pkgSelect = document.getElementById("calc-package");
-        const selectedPkgObj = globalServicesData.find(p => p.id === pkgSelect.value);
-        const estimatedPrice = parseInt(document.getElementById("live-price").textContent.replace('£', ''), 10);
-
-        let hasError = false;
-
-        const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
-        if (!phoneRegex.test(phone)) {
-            showFieldError("book-phone", "Please enter a valid phone number.");
-            hasError = true;
-        }
-
-        const niPostcodeRegex = /^BT\d{1,2}\s?[0-9][A-Z]{2}$/i;
-        if (!niPostcodeRegex.test(postcode)) {
-            showFieldError("book-postcode", "Enter a valid NI postcode (e.g. BT28 1AA)");
-            hasError = true;
-        }
-
-        if (hasError) return;
-
-        // Collect add-ons
-        let selectedAddons = [];
-        document.querySelectorAll(".addon-checkbox:checked").forEach(cb => {
-            selectedAddons.push(cb.getAttribute("data-name"));
-        });
-
-        const formData = {
-            customerName: name,
-            phone: phone,
-            postcode: postcode.toUpperCase(),
-            carModel: carModel,
-            vehicleSize: currentVehicleSize,
-            servicePackage: selectedPkgObj ? selectedPkgObj.name : pkgSelect.value,
-            estimatedPrice: estimatedPrice
-        };
+        const formData = getValidatedFormData();
+        if (!formData) return;
 
         try {
-            // 1. Save inquiry to backend (MariaDB & Discord notification)
             const res = await fetch('/api/bookings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -240,23 +210,7 @@ function setupForms() {
             const result = await res.json();
 
             if (res.ok && result.success) {
-                showToast("Booking saved! Opening WhatsApp...", "success");
-
-                // 2. Construct professional WhatsApp message
-                const addonsText = selectedAddons.length > 0 ? selectedAddons.join(", ") : "None";
-                const whatsappMessage =
-                    `Hi Vance, I'd like to book a mobile valet!%0A%0A` +
-                    `*Name:* ${name}%0A` +
-                    `*Car:* ${carModel} (${currentVehicleSize.toUpperCase()})%0A` +
-                    `*Package:* ${selectedPkgObj ? selectedPkgObj.name : ''}%0A` +
-                    `*Add-ons:* ${addonsText}%0A` +
-                    `*Postcode:* ${postcode.toUpperCase()}%0A` +
-                    `*Estimated Total:* £${estimatedPrice}`;
-
-                setTimeout(() => {
-                    window.open(`https://wa.me/447849351228?text=${whatsappMessage}`, '_blank');
-                }, 800);
-
+                showToast("Booking successfully saved! We will be in contact with you.", "success");
                 bookingForm.reset();
                 updateLiveEstimate();
             } else if (result.errors) {
@@ -266,17 +220,84 @@ function setupForms() {
                 });
                 showToast("Please correct the highlighted errors.", "error");
             } else {
-                showToast(result.message || "Submission failed. Please message via WhatsApp directly.", "error");
+                showToast(result.message || "Submission failed. Please try WhatsApp.", "error");
             }
         } catch (err) {
             console.error(err);
-            showToast("Network error. Opening WhatsApp directly...", "error");
-
-            // Fallback WhatsApp direct open if backend is unreachable
-            const whatsappMessage = `Hi Vance, I'd like to book a valet for my ${carModel} (${currentVehicleSize}). Postcode: ${postcode}. Total: £${estimatedPrice}`;
-            window.open(`https://wa.me/447849351228?text=${encodeURIComponent(whatsappMessage)}`, '_blank');
+            showToast("Network error connecting to server.", "error");
         }
     });
+
+    // Handle "Book via WhatsApp" button explicitly
+    const whatsappBtn = document.getElementById("btn-book-whatsapp");
+    if (whatsappBtn) {
+        whatsappBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            clearValidationErrors();
+
+            const name = document.getElementById("book-name").value.trim() || 'Customer';
+            const phone = document.getElementById("book-phone").value.trim() || '';
+            const postcode = document.getElementById("book-postcode").value.trim() || 'BT Area';
+            const carModel = document.getElementById("book-car").value.trim() || 'Vehicle';
+            const pkgSelect = document.getElementById("calc-package");
+            const selectedPkgObj = globalServicesData.find(p => p.id === pkgSelect?.value);
+            const estimatedPrice = document.getElementById("live-price").textContent;
+
+            let selectedAddons = [];
+            document.querySelectorAll(".addon-checkbox:checked").forEach(cb => {
+                selectedAddons.push(cb.parentElement.textContent.trim().split('(')[0]);
+            });
+            const addonsText = selectedAddons.length > 0 ? selectedAddons.join(", ") : "None";
+
+            const whatsappMessage = 
+                `Hi Vance, I'd like to book a mobile valet!%0A%0A` +
+                `*Name:* ${name}%0A` +
+                `*Phone:* ${phone}%0A` +
+                `*Car:* ${carModel} (${currentVehicleSize.toUpperCase()})%0A` +
+                `*Package:* ${selectedPkgObj ? selectedPkgObj.name : 'Valet Package'}%0A` +
+                `*Add-ons:* ${addonsText}%0A` +
+                `*Postcode:* ${postcode.toUpperCase()}%0A` +
+                `*Estimated Total:* ${estimatedPrice}`;
+
+            window.open(`https://wa.me/447849351228?text=${whatsappMessage}`, '_blank');
+        });
+    }
+}
+
+function getValidatedFormData() {
+    const name = document.getElementById("book-name").value.trim();
+    const phone = document.getElementById("book-phone").value.trim();
+    const postcode = document.getElementById("book-postcode").value.trim();
+    const carModel = document.getElementById("book-car").value.trim();
+    const pkgSelect = document.getElementById("calc-package");
+    const selectedPkgObj = globalServicesData.find(p => p.id === pkgSelect.value);
+    const estimatedPrice = parseInt(document.getElementById("live-price").textContent.replace('£', ''), 10);
+
+    let hasError = false;
+
+    const phoneRegex = /^\+?[0-9\s\-\(\)]{7,20}$/;
+    if (!phoneRegex.test(phone)) {
+        showFieldError("book-phone", "Please enter a valid phone number.");
+        hasError = true;
+    }
+
+    const niPostcodeRegex = /^BT\d{1,2}\s?[0-9][A-Z]{2}$/i;
+    if (!niPostcodeRegex.test(postcode)) {
+        showFieldError("book-postcode", "Enter a valid NI postcode (e.g. BT28 1AA)");
+        hasError = true;
+    }
+
+    if (hasError) return null;
+
+    return {
+        customerName: name,
+        phone: phone,
+        postcode: postcode.toUpperCase(),
+        carModel: carModel,
+        vehicleSize: currentVehicleSize,
+        servicePackage: selectedPkgObj ? selectedPkgObj.name : pkgSelect.value,
+        estimatedPrice: estimatedPrice
+    };
 }
 
 /* ================= 5. UI HELPERS (TOAST & ERRORS) ================= */
@@ -301,8 +322,9 @@ function showToast(message, type = "success") {
 
     const toast = document.createElement("div");
     toast.id = "toast-notification";
-    toast.className = `fixed bottom-6 right-6 z-50 px-6 py-3.5 rounded-xl shadow-2xl text-sm font-bold text-white transition transform duration-300 translate-y-10 opacity-0 flex items-center space-x-3 ${type === "success" ? "bg-emerald-600 border border-emerald-500" : "bg-accent-red border border-red-600"
-        }`;
+    toast.className = `fixed bottom-6 right-6 z-50 px-6 py-3.5 rounded-xl shadow-2xl text-sm font-bold text-white transition transform duration-300 translate-y-10 opacity-0 flex items-center space-x-3 ${
+        type === "success" ? "bg-emerald-600 border border-emerald-500" : "bg-accent-red border border-red-600"
+    }`;
     toast.innerHTML = `<span>${type === "success" ? "✓" : "⚠️"}</span><span>${message}</span>`;
 
     document.body.appendChild(toast);
