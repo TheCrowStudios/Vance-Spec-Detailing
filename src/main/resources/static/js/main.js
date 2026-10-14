@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchAndRenderServices();
     setupBookingCalculator();
     setupBookingActions();
+    setupMobileMenu();
 
     // Initialize Lucide icons on page load
     if (typeof lucide !== 'undefined') {
@@ -347,4 +348,23 @@ function showToast(message, type = "success") {
         toast.classList.add("translate-y-10", "opacity-0");
         setTimeout(() => toast.remove(), 300);
     }, 4000);
+}
+
+function setupMobileMenu() {
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (!mobileMenuBtn || !mobileMenu) return;
+
+    mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('flex');
+    });
+
+    // Close menu when any mobile nav link is clicked
+    document.querySelectorAll('.mobile-link').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+            mobileMenu.classList.remove('flex');
+        });
+    });
 }

@@ -528,6 +528,24 @@
   .max-w-xl {
     max-width: var(--container-xl);
   }
+  .min-w-dvw {
+    min-width: 100dvw;
+  }
+  .min-w-fit {
+    min-width: fit-content;
+  }
+  .min-w-full {
+    min-width: 100%;
+  }
+  .min-w-lvw {
+    min-width: 100lvw;
+  }
+  .min-w-max {
+    min-width: max-content;
+  }
+  .min-w-svw {
+    min-width: 100svw;
+  }
   .flex-shrink {
     flex-shrink: 1;
   }
@@ -1160,6 +1178,12 @@
   .tracking-widest {
     --tw-tracking: var(--tracking-widest);
     letter-spacing: var(--tracking-widest);
+  }
+  .wrap-break-word {
+    overflow-wrap: break-word;
+  }
+  .wrap-normal {
+    overflow-wrap: normal;
   }
   .text-\[\#1877F2\] {
     color: #1877F2;
