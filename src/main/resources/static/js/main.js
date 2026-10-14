@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchAndRenderServices();
     setupBookingCalculator();
     setupBookingActions();
-    
+
     // Initialize Lucide icons on page load
     if (typeof lucide !== 'undefined') {
         lucide.createIcons();
@@ -12,44 +12,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ================= 1. BACKGROUND CANVAS ANIMATION ================= */
 function initCanvasAnimation() {
-    const canvas = document.getElementById("bg-canvas");
+    const canvas = document.getElementById('bg-canvas');
     if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext('2d');
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    window.addEventListener("resize", () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
-    });
-
-    const particles = Array.from({ length: 35 }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 2 + 1,
-        color: Math.random() > 0.5 ? "rgba(217, 4, 41, 0.25)" : "rgba(250, 250, 250, 0.08)",
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: Math.random() * 0.8 + 0.2
-    }));
-
-    function animate() {
-        ctx.clearRect(0, 0, width, height);
-        particles.forEach(p => {
-            p.x += p.vx;
-            p.y += p.vy;
-            if (p.y > height) {
-                p.y = 0;
-                p.x = Math.random() * width;
-            }
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-            ctx.fillStyle = p.color;
-            ctx.fill();
-        });
-        requestAnimationFrame(animate);
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
-    animate();
+    resize();
+    window.addEventListener('resize', resize);
+
+    const drops = [];
+    const count = 45;
+
+    for (let i = 0; i < count; i++) {
+        drops.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 3 + 1,
+            speed: Math.random() * 0.8 + 0.2,
+            alpha: Math.random() * 0.6 + 0.2
+        });
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        // Draw glossy red light beams
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, 'rgba(217, 4, 41, 0.05)');
+        gradient.addColorStop(0.5, 'rgba(0, 0, 0, 0)');
+        gradient.addColorStop(1, 'rgba(217, 4, 41, 0.03)');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Animate hydrophobic drops
+        drops.forEach(d => {
+            ctx.beginPath();
+            ctx.arc(d.x, d.y, d.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${d.alpha})`;
+            ctx.fill();
+
+            d.y += d.speed;
+            if (d.y > canvas.height) {
+                d.y = -10;
+                d.x = Math.random() * canvas.width;
+            }
+        });
+
+        requestAnimationFrame(draw);
+    }
+    draw();
 }
 
 /* ================= 2. DYNAMIC SERVICE FETCHING ================= */
@@ -249,7 +263,7 @@ function setupBookingActions() {
             });
             const addonsText = selectedAddons.length > 0 ? selectedAddons.join(", ") : "None";
 
-            const whatsappMessage = 
+            const whatsappMessage =
                 `Hi Vance, I'd like to book a mobile valet!%0A%0A` +
                 `*Name:* ${name}%0A` +
                 `*Phone:* ${phone}%0A` +
@@ -322,9 +336,8 @@ function showToast(message, type = "success") {
 
     const toast = document.createElement("div");
     toast.id = "toast-notification";
-    toast.className = `fixed bottom-6 right-6 z-50 px-6 py-3.5 rounded-xl shadow-2xl text-sm font-bold text-white transition transform duration-300 translate-y-10 opacity-0 flex items-center space-x-3 ${
-        type === "success" ? "bg-emerald-600 border border-emerald-500" : "bg-accent-red border border-red-600"
-    }`;
+    toast.className = `fixed bottom-6 right-6 z-50 px-6 py-3.5 rounded-xl shadow-2xl text-sm font-bold text-white transition transform duration-300 translate-y-10 opacity-0 flex items-center space-x-3 ${type === "success" ? "bg-emerald-600 border border-emerald-500" : "bg-accent-red border border-red-600"
+        }`;
     toast.innerHTML = `<span>${type === "success" ? "✓" : "⚠️"}</span><span>${message}</span>`;
 
     document.body.appendChild(toast);
