@@ -98,9 +98,9 @@ public class DetailingApiController {
      */
     @PostMapping("/bookings")
     public ResponseEntity<?> createBooking(@Valid @RequestBody BookingRequest bookingRequest) {
-        BookingRequest savedBooking = bookingRepository.save(bookingRequest);
-        notificationService.sendBookingNotification(savedBooking);
-        return ResponseEntity.ok(ApiResponse.success("Booking request received successfully!", savedBooking));
+        // BookingRequest savedBooking = bookingRepository.save(bookingRequest);
+        notificationService.sendBookingNotification(bookingRequest);
+        return ResponseEntity.ok(ApiResponse.success("Booking request received successfully!", bookingRequest));
     }
 
     /**
